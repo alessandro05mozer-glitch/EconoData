@@ -63,6 +63,10 @@ Total: $100+80+120=300$. Mesmo resultado.
 Se somássemos as vendas brutas, $100+180+300=580$, contaríamos o trigo três vezes. É a **dupla contagem**.
 :::
 
+```sim
+id: fluxo-circular
+```
+
 ## A ótica da despesa
 
 $$

@@ -127,6 +127,8 @@ export type Theme = 'system' | 'light' | 'dark'
 export interface Settings {
   theme: Theme
   weeklyGoalXp: number
+  /** Tamanho do texto em %, 100 é o padrão. Ausente em progresso antigo. */
+  fontScale?: number
 }
 
 export interface ProgressState {

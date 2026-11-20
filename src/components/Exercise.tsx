@@ -72,7 +72,7 @@ export function Exercise({ lessonId, trackId, spec }: { lessonId: string; trackI
   const failedCheck = result && result.tests.length > 0 && !passed
 
   return (
-    <section className="my-8 max-w-[48rem] rounded-lg border border-line bg-surface p-5" aria-label="Exercício de código">
+    <section className="my-6 max-w-[46rem] rounded-lg border border-line bg-surface p-5" aria-label="Exercício de código">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className="text-[0.95rem] font-semibold">
           Exercício de código<span className="font-normal">. {LANG_LABEL[spec.lang]}</span>

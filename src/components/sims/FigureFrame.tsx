@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 /** Moldura comum das ilustrações interativas: título, corpo e uma legenda que diz o que observar. */
 export function FigureFrame({ title, hint, children }: { title: string; hint?: string; children: ReactNode }) {
   return (
-    <figure className="my-9 max-w-[48rem] overflow-hidden rounded-lg border border-line bg-surface">
+    <figure className="my-6 max-w-[46rem] overflow-hidden rounded-lg border border-line bg-surface">
       <figcaption className="border-b border-line bg-surface2 px-5 py-2.5 text-[0.95rem] font-semibold">
         Ilustração interativa<span className="font-normal">. {title}</span>
       </figcaption>

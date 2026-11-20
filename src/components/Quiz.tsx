@@ -20,7 +20,7 @@ export function QuizA({ lessonId, trackId, spec }: { lessonId: string; trackId: 
   const score = done ? scoreTipoA(spec.items.map((i) => ({ correct: i.c })), answers) : null
 
   return (
-    <section className="my-8 max-w-[48rem] rounded-lg border border-line bg-surface p-5" aria-label="Questão Tipo A">
+    <section className="my-6 max-w-[46rem] rounded-lg border border-line bg-surface p-5" aria-label="Questão Tipo A">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className="text-[0.95rem] font-semibold">Questão no formato ANPEC<span className="font-normal">. Tipo A, certo ou errado</span></span>
         {best !== undefined && <span className="text-xs text-muted">melhor resultado: {best.toFixed(2)}</span>}
@@ -105,7 +105,7 @@ export function QuizB({ lessonId, trackId, spec }: { lessonId: string; trackId: 
   const ok = done && scoreTipoB(spec.answer, parsed).rq === 1
 
   return (
-    <section className="my-8 max-w-[48rem] rounded-lg border border-line bg-surface p-5" aria-label="Questão Tipo B">
+    <section className="my-6 max-w-[46rem] rounded-lg border border-line bg-surface p-5" aria-label="Questão Tipo B">
       <span className="text-[0.95rem] font-semibold">Questão no formato ANPEC<span className="font-normal">. Tipo B, resposta numérica</span></span>
       <div className="mt-2">
         <Markdown text={spec.stem} />

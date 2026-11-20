@@ -14,8 +14,8 @@
    marca-texto amarelo só para o que precisa ser lembrado. */
 :root {
   --paper: #f3f5f9;
-  --grid: rgba(36, 70, 140, 0.075);
-  --grid-major: rgba(36, 70, 140, 0.12);
+  --grid: rgba(36, 70, 140, 0.05);
+  --grid-major: rgba(36, 70, 140, 0.085);
   --surface: #ffffff;
   --surface-2: #eaeef6;
   --border: #d5dce9;
@@ -40,13 +40,26 @@
   --supply: #c2570a;
   --green: #0a7457;
   --red: #c0291b;
+  --t-fundamentos: #475569;
+  --t-sql: #1d4ed8;
+  --t-python: #8a5a00;
+  --t-r: #6d28d9;
+  --t-econometria: #be185d;
+  --t-projetos: #0d6b63;
+  --t-matematica: #4338ca;
+  --t-estatistica: #0b6a82;
+  --t-micro: #166534;
+  --t-macro: #b43a0b;
+  --t-ecobr: #3f6212;
+  --t-ingles: #be123c;
+  --t-questoes: #111a2e;
   color-scheme: light;
 }
 
 [data-theme='dark'] {
   --paper: #0b1120;
-  --grid: rgba(140, 170, 255, 0.06);
-  --grid-major: rgba(140, 170, 255, 0.1);
+  --grid: rgba(140, 170, 255, 0.04);
+  --grid-major: rgba(140, 170, 255, 0.07);
   --surface: #121a2d;
   --surface-2: #1a2440;
   --border: #28344f;
@@ -68,12 +81,67 @@
   --supply: #f0a064;
   --green: #4fd0a4;
   --red: #f87171;
+  --t-fundamentos: #cbd5e1;
+  --t-sql: #93b4ff;
+  --t-python: #facc15;
+  --t-r: #c4b5fd;
+  --t-econometria: #f9a8d4;
+  --t-projetos: #5eead4;
+  --t-matematica: #a5b4fc;
+  --t-estatistica: #67e8f9;
+  --t-micro: #86efac;
+  --t-macro: #fdba74;
+  --t-ecobr: #bef264;
+  --t-ingles: #fda4af;
+  --t-questoes: #e8edfa;
   color-scheme: dark;
 }
 
-[data-kind='theory'] {
-  --accent: var(--viridian);
-  --accent-soft: var(--viridian-soft);
+[data-track='fundamentos'] {
+  --accent: var(--t-fundamentos);
+}
+[data-track='sql'] {
+  --accent: var(--t-sql);
+}
+[data-track='python'] {
+  --accent: var(--t-python);
+}
+[data-track='r'] {
+  --accent: var(--t-r);
+}
+[data-track='econometria'] {
+  --accent: var(--t-econometria);
+}
+[data-track='projetos'] {
+  --accent: var(--t-projetos);
+}
+[data-track='matematica'] {
+  --accent: var(--t-matematica);
+}
+[data-track='estatistica'] {
+  --accent: var(--t-estatistica);
+}
+[data-track='micro'] {
+  --accent: var(--t-micro);
+}
+[data-track='macro'] {
+  --accent: var(--t-macro);
+}
+[data-track='ecobr'] {
+  --accent: var(--t-ecobr);
+}
+[data-track='ingles'] {
+  --accent: var(--t-ingles);
+}
+[data-track='questoes'] {
+  --accent: var(--t-questoes);
+}
+[data-track] {
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+[data-theme='dark'] [data-track],
+[data-theme='dark'][data-track] {
+  --accent-soft: color-mix(in srgb, var(--accent) 22%, var(--surface));
 }
 
 @theme inline {
@@ -155,13 +223,13 @@ select {
 /* ---------- Texto das lições ---------- */
 .prose-lesson {
   font-family: var(--font-serif);
-  font-size: 1.2rem;
-  line-height: 1.68;
-  max-width: 40rem;
+  font-size: 1.1rem;
+  line-height: 1.62;
+  max-width: 46rem;
   font-variation-settings: 'opsz' 18;
 }
 .prose-lesson > * + * {
-  margin-top: 1.05rem;
+  margin-top: 0.85rem;
 }
 .prose-lesson h1 {
   font-size: 2.4rem;
@@ -170,18 +238,18 @@ select {
   letter-spacing: -0.02em;
 }
 .prose-lesson h2 {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.015em;
-  margin-top: 2.8rem;
-  padding-top: 0.4rem;
+  margin-top: 2.1rem;
+  padding-top: 0.2rem;
   scroll-margin-top: 5rem;
 }
 .prose-lesson h3 {
   font-size: 1.3rem;
   font-weight: 600;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   scroll-margin-top: 5rem;
 }
 .prose-lesson ul {

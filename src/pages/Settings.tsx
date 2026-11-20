@@ -53,6 +53,20 @@ export function Settings() {
             </button>
           ))}
         </div>
+        <h3 className="mt-4 text-sm font-semibold">Tamanho do texto</h3>
+        <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Tamanho do texto">
+          {([[100, 'Padrão'], [112, 'Grande'], [125, 'Muito grande']] as [number, string][]).map(([v, l]) => (
+            <button
+              key={v}
+              role="radio"
+              aria-checked={(p.settings.fontScale ?? 100) === v}
+              onClick={() => setSettings({ fontScale: v })}
+              className={`rounded-lg border px-3 py-1.5 text-sm ${(p.settings.fontScale ?? 100) === v ? 'border-brand bg-brandsoft font-semibold' : 'border-line'}`}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
       </section>
 
       <section className="rounded-lg border border-line bg-surface p-4">

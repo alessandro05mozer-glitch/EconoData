@@ -49,7 +49,7 @@ function Path({ kind }: { kind: 'code' | 'theory' }) {
   const n = lessons.filter((l) => done(l.id)).length
   const code = kind === 'code'
   return (
-    <section className={`rounded-lg border border-line bg-surface p-5 ${code ? 'border-t-[3px] border-t-cobalt' : 'border-t-[3px] border-t-viridian'}`}>
+    <section className="rounded-lg border border-line border-t-[3px] border-t-ink bg-surface p-5">
       <h2 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>
         {code ? 'Laboratório de programação' : 'Formação teórica'}
       </h2>
@@ -63,7 +63,8 @@ function Path({ kind }: { kind: 'code' | 'theory' }) {
           <p className="mt-1 text-sm text-muted">{next.minutes.quick} min na versão rápida, {next.minutes.full} min na completa</p>
           <Link
             to={`/licao/${next.id}`}
-            className={`mt-4 inline-block rounded-md px-4 py-2 text-sm font-semibold text-paper ${code ? 'bg-cobalt' : 'bg-viridian'}`}
+            data-track={next.track}
+            className="mt-4 inline-block rounded-md bg-brand px-4 py-2 text-sm font-semibold text-paper"
             style={{ color: 'var(--paper)' }}
           >
             {n === 0 ? 'Começar' : 'Continuar'}
@@ -76,7 +77,7 @@ function Path({ kind }: { kind: 'code' | 'theory' }) {
         {n} de {lessons.length} {lessons.length === 1 ? 'lição concluída' : 'lições concluídas'}
       </p>
       <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface2">
-        <div className={`h-full ${code ? 'bg-cobalt' : 'bg-viridian'}`} style={{ width: `${lessons.length ? (n / lessons.length) * 100 : 0}%` }} />
+        <div className="h-full bg-ink" style={{ width: `${lessons.length ? (n / lessons.length) * 100 : 0}%` }} />
       </div>
     </section>
   )
@@ -132,14 +133,14 @@ export function Dashboard() {
         </div>
       </div>
 
-      <section className="mt-8">
+      <section className="mt-6">
         <h2 className="mb-3 text-lg font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Progresso por trilha</h2>
         <ul className="divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
           {TRACKS.map((t) => {
             const ls = lessonsOfTrack(t.id)
             const n = ls.filter((l) => done(l.id)).length
             return (
-              <li key={t.id}>
+              <li key={t.id} data-track={t.id}>
                 <Link to={`/trilhas/${t.id}`} className="flex items-center gap-3 px-4 py-3 hover:bg-surface2">
                   <TrackGlyph track={t} size={34} />
                   <span className="flex-1">
@@ -149,7 +150,7 @@ export function Dashboard() {
                   <span className="w-28 text-right text-xs text-muted">
                     {ls.length === 0 ? 'em construção' : `${n} de ${ls.length} ${ls.length === 1 ? 'lição' : 'lições'}`}
                     <span className="mt-1 block h-1 overflow-hidden rounded-full bg-surface2">
-                      <span className={`block h-full ${t.kind === 'code' ? 'bg-cobalt' : 'bg-viridian'}`} style={{ width: `${ls.length ? (n / ls.length) * 100 : 0}%` }} />
+                      <span className="block h-full bg-brand" style={{ width: `${ls.length ? (n / ls.length) * 100 : 0}%` }} />
                     </span>
                   </span>
                 </Link>
@@ -159,7 +160,7 @@ export function Dashboard() {
         </ul>
       </section>
 
-      <section className="mt-8">
+      <section className="mt-6">
         <h2 className="mb-3 text-lg font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Conquistas</h2>
         <ul className="grid gap-2 sm:grid-cols-2">
           {ach.map((a) => (

@@ -15,6 +15,10 @@ export function useTheme(): { effective: 'light' | 'dark' } {
     mq.addEventListener('change', on)
     return () => mq.removeEventListener('change', on)
   }, [])
+  const scale = useStore((s) => s.p.settings.fontScale ?? 100)
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${scale}%`
+  }, [scale])
   const effective = theme === 'system' ? (sys ? 'dark' : 'light') : theme
   useEffect(() => {
     document.documentElement.dataset.theme = effective

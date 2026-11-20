@@ -1,3 +1,4 @@
+import { QuestionBank } from './QuestionBank'
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { TrackGlyph } from '../components/TrackGlyph'
@@ -20,7 +21,7 @@ export function Tracks({ kind }: { kind: 'code' | 'theory' }) {
   const p = useStore((s) => s.p)
   const list = TRACKS.filter((t) => t.kind === kind)
   return (
-    <div className="mx-auto max-w-4xl" data-kind={kind}>
+    <div className="mx-auto max-w-4xl">
       <h1 className="text-[2rem] font-semibold leading-tight tracking-tight" style={{ fontFamily: 'var(--font-serif)' }}>
         {COPY[kind].title}
       </h1>
@@ -41,19 +42,19 @@ export function Tracks({ kind }: { kind: 'code' | 'theory' }) {
           const ls = lessonsOfTrack(t.id)
           const n = ls.filter((l) => p.lessons[l.id]?.quickDone || p.lessons[l.id]?.fullDone).length
           return (
-            <li key={t.id}>
+            <li key={t.id} data-track={t.id}>
               <Link to={`/trilhas/${t.id}`} className="flex items-center gap-4 px-4 py-4 hover:bg-surface2">
                 <TrackGlyph track={t} size={46} />
                 <span className="flex-1">
                   <span className="block font-semibold leading-snug">{t.title}</span>
                   <span className="block text-sm text-muted">{t.summary}</span>
-                  {t.anpec && <span className="mt-1 inline-block rounded bg-surface2 px-1.5 py-0.5 text-xs text-muted">no programa da ANPEC</span>}
+                  {t.anpec && <span className="mt-1 inline-block rounded bg-brandsoft px-1.5 py-0.5 text-xs font-medium text-brand">no programa da ANPEC</span>}
                 </span>
                 <span className="w-24 shrink-0 text-right text-xs text-muted">
                   {ls.length === 0 ? 'em construção' : `${n} de ${ls.length}`}
                   {ls.length > 0 && (
                     <span className="mt-1 block h-1 overflow-hidden rounded-full bg-surface2">
-                      <span className={`block h-full ${kind === 'code' ? 'bg-cobalt' : 'bg-viridian'}`} style={{ width: `${(n / ls.length) * 100}%` }} />
+                      <span className="block h-full bg-brand" style={{ width: `${(n / ls.length) * 100}%` }} />
                     </span>
                   )}
                 </span>
@@ -74,7 +75,7 @@ export function TrackPage() {
   const ls = lessonsOfTrack(trackId)
   const back = track.kind === 'code' ? '/laboratorio' : '/teoria'
   return (
-    <div className="mx-auto max-w-3xl" data-kind={track.kind}>
+    <div className="mx-auto max-w-3xl" data-track={track.id}>
       <Link to={back} className="text-sm text-brand underline underline-offset-4">
         {track.kind === 'code' ? 'Laboratório' : 'Formação teórica'}
       </Link>
@@ -83,7 +84,9 @@ export function TrackPage() {
         <h1 className="text-[2rem] font-semibold leading-tight tracking-tight" style={{ fontFamily: 'var(--font-serif)' }}>{track.title}</h1>
       </div>
       <p className="mt-3 max-w-2xl text-muted">{track.summary}</p>
-      {ls.length === 0 ? (
+      {track.id === 'questoes' ? (
+        <QuestionBank />
+      ) : ls.length === 0 ? (
         <p className="mt-6 rounded-lg border border-dashed border-line bg-surface p-5 text-muted">
           As lições desta trilha ainda estão sendo escritas. Enquanto isso, volte ao painel e siga outra trilha.
         </p>

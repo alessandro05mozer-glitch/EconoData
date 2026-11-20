@@ -13,7 +13,7 @@ const STYLE: Record<CalloutVariant, { label: string; box: string; bar: string; h
 export function Callout({ variant, title, text }: { variant: CalloutVariant; title: string; text: string }) {
   const s = STYLE[variant]
   return (
-    <aside className={`my-7 max-w-[40rem] rounded-r-md border-l-4 px-5 py-4 ${s.box} ${s.bar} ${variant === 'definicao' ? 'border-y border-r border-y-line border-r-line' : ''}`}>
+    <aside className={`my-5 max-w-[46rem] rounded-r-md border-l-4 px-5 py-4 ${s.box} ${s.bar} ${variant === 'definicao' ? 'border-y border-r border-y-line border-r-line' : ''}`}>
       <p className={`mb-1.5 text-[0.95rem] font-semibold ${s.head}`}>
         {s.label}
         {title ? <span className="font-normal">. {title}</span> : null}
@@ -27,7 +27,7 @@ export function Steps({ title, problem, steps }: { title: string; problem: strin
   const [shown, setShown] = useState(0)
   const all = shown >= steps.length
   return (
-    <section className="my-8 max-w-[48rem] overflow-hidden rounded-lg border border-line bg-surface" aria-label={`Exemplo resolvido: ${title}`}>
+    <section className="my-6 max-w-[46rem] overflow-hidden rounded-lg border border-line bg-surface" aria-label={`Exemplo resolvido: ${title}`}>
       <div className="border-b border-line bg-surface2 px-5 py-3">
         <p className="text-[0.95rem] font-semibold">
           Exemplo resolvido{title ? <span className="font-normal">. {title}</span> : null}
@@ -72,7 +72,7 @@ export function Steps({ title, problem, steps }: { title: string; problem: strin
 export function Think({ title, question, answer }: { title: string; question: string; answer: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <section className="my-8 max-w-[40rem] rounded-lg border-2 border-dashed border-brand bg-surface px-5 py-4" aria-label="Pause e pense">
+    <section className="my-6 max-w-[46rem] rounded-lg border-2 border-dashed border-brand bg-surface px-5 py-4" aria-label="Pause e pense">
       <p className="mb-1.5 text-[0.95rem] font-semibold text-brand">
         Pause e pense{title ? <span className="font-normal">. {title}</span> : null}
       </p>

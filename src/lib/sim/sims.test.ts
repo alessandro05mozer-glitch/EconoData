@@ -117,3 +117,133 @@ describe('elasticidade da demanda linear', () => {
     for (const p of [10, 20, 24, 26, 30, 40]) expect(revenue(d, p)).toBeLessThan(revenue(d, 25))
   })
 })
+
+import { IPCA_ANUAL, ipcaAccumulated, purchasingPower, correctedValue } from '../data/brasil'
+import { competitiveQ, deadweightLoss, lerner, monopolyPrice, monopolyProfit, monopolyQ, marginalRevenue, demandP } from './monopoly'
+import { pureNash, socialOptimum, type Payoffs } from './game'
+import { compound, doublingTime, realRateApprox, realRateExact, rule70 } from './fisher'
+import { histogram, sampleMeans } from './clt'
+import { ols } from './ols'
+import { equilibrium, isCurveI, lmCurveI } from './islm'
+import { gini, giniNumeric, topShare } from './lorenz'
+
+describe('IPCA real', () => {
+  it('séries conferidas', () => {
+    expect(IPCA_ANUAL[2024]).toBe(4.83)
+    expect(IPCA_ANUAL[2021]).toBe(10.06)
+    expect(Object.keys(IPCA_ANUAL).length).toBe(32)
+  })
+  it('acumulado compõe as taxas', () => {
+    expect(ipcaAccumulated(2023, 2024)).toBeCloseTo((1.0462 * 1.0483 - 1) * 100, 6)
+    expect(ipcaAccumulated(2024, 2024)).toBeCloseTo(4.83)
+    expect(ipcaAccumulated(2025, 2024)).toBe(0)
+  })
+  it('poder de compra é o inverso da correção', () => {
+    expect(purchasingPower(1995, 2025) * (correctedValue(1995, 2025) / 100)).toBeCloseTo(100)
+    expect(correctedValue(1995, 2025)).toBeGreaterThan(400)
+  })
+})
+
+describe('monopólio', () => {
+  const m = { a: 100, b: 1, c: 20 }
+  it('RMg = CMg em Qm=40, P=60, lucro 1600', () => {
+    expect(monopolyQ(m)).toBe(40)
+    expect(marginalRevenue(m, 40)).toBe(20)
+    expect(monopolyPrice(m)).toBe(60)
+    expect(monopolyProfit(m)).toBe(1600)
+  })
+  it('concorrência: P = CMg em Q=80; peso morto 800; Lerner = 1/|ε|', () => {
+    expect(competitiveQ(m)).toBe(80)
+    expect(demandP(m, 80)).toBe(20)
+    expect(deadweightLoss(m)).toBe(800)
+    const eps = (1 / m.b) * (monopolyPrice(m) / monopolyQ(m))
+    expect(lerner(m)).toBeCloseTo(1 / eps)
+  })
+})
+
+describe('teoria dos jogos', () => {
+  const pd: Payoffs = [[[-1, -1], [-3, 0]], [[0, -3], [-2, -2]]]
+  it('dilema dos prisioneiros: único Nash (confessar, confessar), ótimo social é cooperar', () => {
+    expect(pureNash(pd)).toEqual([[1, 1]])
+    expect(socialOptimum(pd)).toEqual([0, 0])
+  })
+  const coord: Payoffs = [[[2, 2], [0, 0]], [[0, 0], [1, 1]]]
+  it('coordenação tem dois equilíbrios', () => {
+    expect(pureNash(coord)).toEqual([[0, 0], [1, 1]])
+  })
+  const mp: Payoffs = [[[1, -1], [-1, 1]], [[-1, 1], [1, -1]]]
+  it('par ou ímpar não tem equilíbrio em estratégias puras', () => {
+    expect(pureNash(mp)).toEqual([])
+  })
+})
+
+describe('Fisher e crescimento', () => {
+  it('juro real exato e aproximação', () => {
+    expect(realRateExact(15, 5)).toBeCloseTo(9.5238, 3)
+    expect(realRateApprox(15, 5)).toBe(10)
+    expect(realRateExact(10, 10)).toBeCloseTo(0)
+  })
+  it('regra dos 70 e duplicação exata', () => {
+    expect(doublingTime(7)).toBeCloseTo(10.245, 2)
+    expect(rule70(7)).toBe(10)
+    expect(compound(100, 7, doublingTime(7))).toBeCloseTo(200)
+  })
+})
+
+describe('TCL', () => {
+  it('médias de n=30 têm média ≈ 1 e desvio ≈ 1/√30', () => {
+    const xs = sampleMeans(30, 2000, 7)
+    const mean = xs.reduce((a, b) => a + b, 0) / xs.length
+    const sd = Math.sqrt(xs.reduce((a, b) => a + (b - mean) ** 2, 0) / xs.length)
+    expect(mean).toBeCloseTo(1, 1)
+    expect(sd).toBeCloseTo(1 / Math.sqrt(30), 1)
+  })
+  it('histograma conserva a contagem dentro do intervalo', () => {
+    const h = histogram([0.1, 0.2, 0.9, 5], 0, 1, 2)
+    expect(h).toEqual([2, 1])
+  })
+})
+
+describe('MQO', () => {
+  it('reta exata', () => {
+    const f = ols([{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 5 }])!
+    expect(f.a).toBeCloseTo(1)
+    expect(f.b).toBeCloseTo(2)
+    expect(f.r2).toBeCloseTo(1)
+  })
+  it('resíduos somam zero e x constante é indefinido', () => {
+    const pts = [{ x: 1, y: 2 }, { x: 2, y: 1 }, { x: 3, y: 4 }, { x: 4, y: 3 }]
+    const f = ols(pts)!
+    expect(pts.reduce((s, p) => s + (p.y - f.a - f.b * p.x), 0)).toBeCloseTo(0)
+    expect(ols([{ x: 1, y: 1 }, { x: 1, y: 2 }])).toBeNull()
+  })
+})
+
+describe('IS–LM', () => {
+  const p = { c0: 100, c: 0.75, T: 80, I0: 150, b: 20, G: 100, k: 0.5, h: 25, MP: 200 }
+  it('o equilíbrio está nas duas curvas', () => {
+    const { Y, i } = equilibrium(p)
+    expect(isCurveI(p, Y)).toBeCloseTo(i)
+    expect(lmCurveI(p, Y)).toBeCloseTo(i)
+  })
+  it('mais gasto público aumenta Y e i; mais moeda aumenta Y e reduz i', () => {
+    const base = equilibrium(p)
+    const fiscal = equilibrium({ ...p, G: p.G + 20 })
+    const monet = equilibrium({ ...p, MP: p.MP + 50 })
+    expect(fiscal.Y).toBeGreaterThan(base.Y)
+    expect(fiscal.i).toBeGreaterThan(base.i)
+    expect(monet.Y).toBeGreaterThan(base.Y)
+    expect(monet.i).toBeLessThan(base.i)
+  })
+})
+
+describe('Lorenz e Gini', () => {
+  it('fórmula fechada confere com a integral numérica', () => {
+    for (const k of [1, 1.5, 2, 3.4]) expect(giniNumeric(k)).toBeCloseTo(gini(k), 3)
+  })
+  it('igualdade perfeita e parcela do topo', () => {
+    expect(gini(1)).toBe(0)
+    expect(topShare(0.1, 1)).toBeCloseTo(0.1)
+    expect(topShare(0.1, 3)).toBeGreaterThan(0.25)
+  })
+})

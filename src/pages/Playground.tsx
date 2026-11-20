@@ -37,7 +37,7 @@ export function Playground() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl" data-kind="code">
+    <div className="mx-auto max-w-4xl">
       <Link to="/laboratorio" className="text-sm text-brand underline underline-offset-4">Laboratório</Link>
       <h1 className="mt-2 text-[2rem] font-semibold leading-tight tracking-tight" style={{ fontFamily: 'var(--font-serif)' }}>Editor livre</h1>
       <p className="mt-1 text-muted">Sem exercício, sem nota. Seu código de cada linguagem fica guardado enquanto você troca de aba.</p>

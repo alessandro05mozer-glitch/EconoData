@@ -17,8 +17,8 @@ export default defineConfig({
         short_name: 'EconoData',
         description: 'Cursinho pessoal de dados, economia e pesquisa, do zero ao nível de mestrado.',
         lang: 'pt-BR',
-        theme_color: '#4f46e5',
-        background_color: '#0b1020',
+        theme_color: '#f3f5f9',
+        background_color: '#f3f5f9',
         display: 'standalone',
         start_url: '/',
         icons: [

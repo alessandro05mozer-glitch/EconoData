@@ -6,7 +6,7 @@ import { Icon } from '../components/Icon'
 import { Markdown } from '../components/Markdown'
 import { QuizA, QuizB } from '../components/Quiz'
 import { SIMS } from '../components/sims'
-import { kindOfLesson, LESSON_BY_ID, lessonsOfTrack } from '../content/content'
+import { LESSON_BY_ID, lessonsOfTrack } from '../content/content'
 import { TRACK_BY_ID } from '../content/tracks'
 import { visibleSegments } from '../lib/lessonParser'
 import { headingsOf, slugify } from '../lib/slug'
@@ -56,7 +56,6 @@ export function LessonPage() {
 
   if (!lesson) return <p>Lição não encontrada. <Link className="underline" to="/">Voltar ao painel</Link></p>
 
-  const kind = kindOfLesson(lesson)
   const track = TRACK_BY_ID[lesson.track]
   const siblings = lessonsOfTrack(lesson.track)
   const idx = siblings.findIndex((l) => l.id === lesson.id)
@@ -65,7 +64,7 @@ export function LessonPage() {
   const interactive = segments.filter((s) => ['exercise', 'quizA', 'quizB', 'sim', 'steps', 'think'].includes(s.kind)).length
 
   return (
-    <article data-kind={kind} className="mx-auto max-w-[70rem]">
+    <article data-track={lesson.track} className="mx-auto max-w-[70rem]">
       <Link to={`/trilhas/${lesson.track}`} className="text-sm text-brand underline underline-offset-4">{track?.title}</Link>
       <h1 className="mt-2 max-w-[44rem] text-[clamp(2rem,4vw,2.9rem)] font-semibold leading-[1.1] tracking-tight" style={{ fontFamily: 'var(--font-serif)' }}>
         {lesson.title}
@@ -119,7 +118,7 @@ export function LessonPage() {
 
         <div className="min-w-0">
           {lesson.objectives.length > 0 && (
-            <section className="mb-8 max-w-[40rem] rounded-md border border-line bg-surface p-5">
+            <section className="mb-8 max-w-[46rem] rounded-md border border-line bg-surface p-5">
               <h2 className="text-[0.95rem] font-semibold">Ao final você será capaz de</h2>
               <ul className="mt-2 space-y-1.5 text-[0.98rem]">
                 {lesson.objectives.map((o, i) => (
@@ -155,7 +154,7 @@ export function LessonPage() {
             }
           })}
 
-          <div className="mt-12 flex max-w-[48rem] flex-wrap items-center gap-4 rounded-lg border border-line bg-surface p-5">
+          <div className="mt-12 flex max-w-[46rem] flex-wrap items-center gap-4 rounded-lg border border-line bg-surface p-5">
             {done ? (
               <p className="flex items-center gap-2 font-semibold text-ok"><Icon name="check" size={18} /> Versão {level === 'quick' ? 'rápida' : 'completa'} concluída em {done}.</p>
             ) : (
