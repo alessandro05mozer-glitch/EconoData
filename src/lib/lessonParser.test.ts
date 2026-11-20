@@ -117,4 +117,50 @@ explanation: assim
     const body = `${HEAD}\`\`\`exercise\nid: e\nlang: cobol\nprompt: x\ntests: y\n\`\`\`\n`
     expect(() => parseLesson(body, 't.md')).toThrow(/linguagem/)
   })
+
+  it('lê blocos de destaque, exemplo resolvido e pause e pense', () => {
+    const body = `${HEAD}Antes.
+
+:::definicao Elasticidade
+Texto da definição com $x$.
+:::
+
+:::exemplo Calcule
+Enunciado
+---
+Passo um
+---
+Passo dois
+:::
+
+:::pense Pare e pense
+Pergunta?
+---
+Resposta.
+:::
+
+Depois.
+`
+    const l = parseLesson(body, 't.md')
+    expect(l.segments.map((s) => s.kind)).toEqual(['md', 'callout', 'steps', 'think', 'md'])
+    const c = l.segments[1]
+    expect(c.kind === 'callout' && c.variant).toBe('definicao')
+    expect(c.kind === 'callout' && c.title).toBe('Elasticidade')
+    const st = l.segments[2]
+    expect(st.kind === 'steps' && st.steps).toEqual(['Passo um', 'Passo dois'])
+    expect(st.kind === 'steps' && st.problem).toBe('Enunciado')
+    const th = l.segments[3]
+    expect(th.kind === 'think' && [th.question, th.answer]).toEqual(['Pergunta?', 'Resposta.'])
+  })
+
+  it('erros claros em blocos de destaque mal escritos', () => {
+    expect(() => parseLesson(`${HEAD}:::definicao X\nsem fim\n`, 't.md')).toThrow(/sem fechamento/)
+    expect(() => parseLesson(`${HEAD}:::exemplo X\nsó enunciado\n:::\n`, 't.md')).toThrow(/passo/)
+    expect(() => parseLesson(`${HEAD}:::pense X\npergunta sem resposta\n:::\n`, 't.md')).toThrow(/pergunta e resposta/)
+  })
+
+  it('o marcador <!--full--> funciona junto com os destaques', () => {
+    const l = parseLesson(`${HEAD}:::resumo R\nrápido\n:::\n\n<!--full-->\n\n:::nota N\nsó completo\n:::\n`, 't.md')
+    expect(l.segments.map((s) => s.full)).toEqual([false, true])
+  })
 })

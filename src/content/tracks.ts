@@ -1,6 +1,6 @@
 import type { Track } from '../lib/types'
 
-// As treze trilhas do EconoData. O conteúdo das lições vive em src/content/lessons/<trilha>/.
+// As treze trilhas do EconoData, em dois caminhos: Laboratório (usa código) e Formação teórica (não usa). O conteúdo das lições vive em src/content/lessons/<trilha>/.
 // "anpec: true" marca as matérias que fazem parte do programa oficial do Exame ANPEC.
 export const TRACKS: Track[] = [
   {
@@ -11,8 +11,8 @@ export const TRACKS: Track[] = [
     summary: 'Lógica, terminal, Git e ambiente de trabalho.',
     area: 'base',
     anpec: false,
-    hue: 215,
-    emoji: '💻',
+    kind: 'code',
+    glyph: '$_',
   },
   {
     id: 'matematica',
@@ -22,8 +22,8 @@ export const TRACKS: Track[] = [
     summary: 'Álgebra linear, cálculo, otimização com restrições, séries e equações diferenciais.',
     area: 'base',
     anpec: true,
-    hue: 265,
-    emoji: '∑',
+    kind: 'theory',
+    glyph: '∑',
   },
   {
     id: 'sql',
@@ -33,8 +33,8 @@ export const TRACKS: Track[] = [
     summary: 'De SELECT a window functions, praticando sobre bases reais no navegador.',
     area: 'dados',
     anpec: false,
-    hue: 195,
-    emoji: '🗄️',
+    kind: 'code',
+    glyph: 'SQL',
   },
   {
     id: 'python',
@@ -44,8 +44,8 @@ export const TRACKS: Track[] = [
     summary: 'Sintaxe, pandas, visualização, APIs e automação.',
     area: 'dados',
     anpec: false,
-    hue: 50,
-    emoji: '🐍',
+    kind: 'code',
+    glyph: 'py',
   },
   {
     id: 'r',
@@ -55,8 +55,8 @@ export const TRACKS: Track[] = [
     summary: 'Tidyverse, gráficos, modelos e relatórios reproduzíveis.',
     area: 'dados',
     anpec: false,
-    hue: 215,
-    emoji: '📊',
+    kind: 'code',
+    glyph: 'R',
   },
   {
     id: 'estatistica',
@@ -66,19 +66,19 @@ export const TRACKS: Track[] = [
     summary: 'Probabilidade, inferência, regressão clássica e introdução a séries de tempo.',
     area: 'base',
     anpec: true,
-    hue: 330,
-    emoji: '🎲',
+    kind: 'theory',
+    glyph: 'σ',
   },
   {
     id: 'econometria',
     order: 7,
     title: 'Econometria aplicada',
     short: 'Econometria',
-    summary: 'Além da ANPEC: variáveis instrumentais, painel, VAR, DiD e RDD.',
+    summary: 'Além da ANPEC: regressão aplicada, variáveis instrumentais, painel, DiD e RDD, com código.',
     area: 'dados',
     anpec: false,
-    hue: 150,
-    emoji: '📈',
+    kind: 'code',
+    glyph: 'β',
   },
   {
     id: 'micro',
@@ -88,8 +88,8 @@ export const TRACKS: Track[] = [
     summary: 'Consumidor, firma, mercados, equilíbrio geral, informação e jogos.',
     area: 'economia',
     anpec: true,
-    hue: 25,
-    emoji: '🛒',
+    kind: 'theory',
+    glyph: 'μ',
   },
   {
     id: 'macro',
@@ -99,8 +99,8 @@ export const TRACKS: Track[] = [
     summary: 'Contas nacionais, moeda, IS-LM, crescimento, economia aberta e política fiscal.',
     area: 'economia',
     anpec: true,
-    hue: 5,
-    emoji: '🌐',
+    kind: 'theory',
+    glyph: 'Y',
   },
   {
     id: 'ecobr',
@@ -110,8 +110,8 @@ export const TRACKS: Track[] = [
     summary: 'Do Império ao século XXI, e a escrita da discursiva.',
     area: 'economia',
     anpec: true,
-    hue: 130,
-    emoji: '🇧🇷',
+    kind: 'theory',
+    glyph: 'BR',
   },
   {
     id: 'ingles',
@@ -121,8 +121,8 @@ export const TRACKS: Track[] = [
     summary: 'Glossário de dados e economia, leitura de artigos e documentação, escrita.',
     area: 'carreira',
     anpec: false,
-    hue: 280,
-    emoji: '🔤',
+    kind: 'theory',
+    glyph: 'En',
   },
   {
     id: 'projetos',
@@ -132,8 +132,8 @@ export const TRACKS: Track[] = [
     summary: 'Do problema à conclusão escrita, com dados públicos, para o portfólio.',
     area: 'carreira',
     anpec: false,
-    hue: 170,
-    emoji: '🧪',
+    kind: 'code',
+    glyph: '{ }',
   },
   {
     id: 'questoes',
@@ -143,8 +143,8 @@ export const TRACKS: Track[] = [
     summary: 'Questões no formato ANPEC (Tipo A e B) e de concurso, por tema.',
     area: 'carreira',
     anpec: true,
-    hue: 240,
-    emoji: '📝',
+    kind: 'theory',
+    glyph: '?',
   },
 ]
 

@@ -25,33 +25,33 @@ export function Review() {
   if (!card) {
     return (
       <div className="mx-auto max-w-xl text-center">
-        <h1 className="text-2xl font-extrabold">Revisão espaçada</h1>
+        <h1 className="text-3xl font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Revisão espaçada</h1>
         <p className="mt-4 text-lg">{reviewed > 0 ? `Pronto! Você revisou ${reviewed} ${reviewed === 1 ? 'cartão' : 'cartões'} hoje.` : total === 0 ? 'Ainda não há cartões.' : 'Nada para revisar agora.'}</p>
         <p className="mt-2 text-muted">
           {total === 0
             ? 'Cartões surgem quando você conclui uma lição e quando guarda um exercício que errou.'
             : `Você tem ${total} ${total === 1 ? 'cartão' : 'cartões'} no total. Eles voltam no dia certo.`}
         </p>
-        <Link to="/trilhas" className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 font-semibold text-white">Estudar uma lição</Link>
+        <Link to="/" className="mt-4 inline-block rounded-md bg-brand px-5 py-2.5 font-semibold text-paper">Estudar uma lição</Link>
       </div>
     )
   }
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="text-2xl font-extrabold">Revisão espaçada</h1>
+      <h1 className="text-3xl font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Revisão espaçada</h1>
       <p className="text-sm text-muted">{due.length} para revisar agora</p>
-      <div className="mt-4 rounded-2xl border border-line bg-surface p-5 shadow-sm">
-        <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Pergunta</p>
+      <div className="mt-4 rounded-lg border border-line bg-surface p-5">
+        <p className="mb-2 text-sm font-semibold text-muted">Pergunta</p>
         <Markdown text={card.front} />
         {flipped ? (
           <>
             <hr className="my-4 border-line" />
-            <p className="mb-2 text-xs font-bold uppercase tracking-wide text-muted">Resposta</p>
+            <p className="mb-2 text-sm font-semibold text-muted">Resposta</p>
             <Markdown text={card.back} />
           </>
         ) : (
-          <button onClick={() => setFlipped(true)} className="mt-4 w-full rounded-xl bg-brand py-2.5 font-semibold text-white">
+          <button onClick={() => setFlipped(true)} className="mt-4 w-full rounded-md bg-brand py-2.5 font-semibold text-paper">
             Mostrar resposta
           </button>
         )}
@@ -66,7 +66,7 @@ export function Review() {
                 setFlipped(false)
                 setReviewed((n) => n + 1)
               }}
-              className={`rounded-xl py-2.5 text-sm font-semibold ${g.cls}`}
+              className={`rounded-md py-2.5 text-sm font-semibold ${g.cls}`}
             >
               {g.label}
             </button>

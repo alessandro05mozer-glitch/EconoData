@@ -72,12 +72,12 @@ export function Exercise({ lessonId, trackId, spec }: { lessonId: string; trackI
   const failedCheck = result && result.tests.length > 0 && !passed
 
   return (
-    <section className="my-6 rounded-2xl border border-line bg-surface p-4 shadow-sm" aria-label="Exercício de código">
+    <section className="my-8 max-w-[48rem] rounded-lg border border-line bg-surface p-5" aria-label="Exercício de código">
       <div className="mb-2 flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-brandsoft px-2.5 py-0.5 text-xs font-bold text-brand">
-          Exercício · {LANG_LABEL[spec.lang]}
+        <span className="text-[0.95rem] font-semibold">
+          Exercício de código<span className="font-normal">. {LANG_LABEL[spec.lang]}</span>
         </span>
-        {progress?.passed && <span className="rounded-full bg-oksoft px-2.5 py-0.5 text-xs font-bold text-ok">✓ resolvido</span>}
+        {progress?.passed && <span className="rounded-md bg-oksoft px-2 py-0.5 text-xs font-semibold text-ok">resolvido</span>}
       </div>
       <Markdown text={spec.prompt} />
 
@@ -89,7 +89,7 @@ export function Exercise({ lessonId, trackId, spec }: { lessonId: string; trackI
         <button
           onClick={() => run('check')}
           disabled={busy !== null}
-          className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white"
+          className="rounded-md bg-brand px-4 py-2 text-sm font-semibold text-paper"
         >
           {busy === 'check' ? 'Verificando…' : 'Verificar resposta'}
         </button>
@@ -142,12 +142,12 @@ export function Exercise({ lessonId, trackId, spec }: { lessonId: string; trackI
 
       <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
         {hintsShown < spec.hints.length && (
-          <button onClick={() => setHintsShown((n) => n + 1)} className="rounded-lg border border-line px-3 py-1.5">
-            💡 Dica {hintsShown + 1} de {spec.hints.length}
+          <button onClick={() => setHintsShown((n) => n + 1)} className="rounded-md border border-line px-3 py-1.5">
+            Dica {hintsShown + 1} de {spec.hints.length}
           </button>
         )}
         {(progress?.attempts ?? 0) > 0 && !showSolution && (
-          <button onClick={() => setShowSolution(true)} className="rounded-lg border border-line px-3 py-1.5">
+          <button onClick={() => setShowSolution(true)} className="rounded-md border border-line px-3 py-1.5">
             Ver solução
           </button>
         )}
@@ -159,7 +159,7 @@ export function Exercise({ lessonId, trackId, spec }: { lessonId: string; trackI
               ])
               setSaved(true)
             }}
-            className="rounded-lg border border-line px-3 py-1.5"
+            className="rounded-md border border-line px-3 py-1.5"
           >
             Guardar na revisão
           </button>

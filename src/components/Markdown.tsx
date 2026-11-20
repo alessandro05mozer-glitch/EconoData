@@ -2,9 +2,21 @@ import ReactMarkdown, { type Components } from 'react-markdown'
 import rehypeKatex from 'rehype-katex'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
+import type { ReactNode } from 'react'
+import { slugify } from '../lib/slug'
 
 // Termo em inglês com tradução: [hedge](gloss:proteção) vira um termo com a tradução no balão.
+function textOf(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(textOf).join('')
+  if (node && typeof node === 'object' && 'props' in node) return textOf((node as { props: { children?: ReactNode } }).props.children)
+  return ''
+}
+
 const components: Components = {
+  h2({ children }) {
+    return <h2 id={slugify(textOf(children).replace(/[`*_$]/g, ''))}>{children}</h2>
+  },
   a({ href, children }) {
     if (href?.startsWith('gloss:')) {
       const meaning = decodeURIComponent(href.slice('gloss:'.length))
@@ -25,9 +37,9 @@ const components: Components = {
 
 const urlTransform = (url: string) => (url.startsWith('gloss:') ? url : /^(https?:|mailto:|#|\/)/.test(url) ? url : '')
 
-export function Markdown({ text }: { text: string }) {
+export function Markdown({ text, compact = false }: { text: string; compact?: boolean }) {
   return (
-    <div className="prose-lesson">
+    <div className={compact ? 'prose-lesson prose-compact' : 'prose-lesson'}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}

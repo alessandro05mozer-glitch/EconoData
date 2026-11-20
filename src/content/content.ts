@@ -18,3 +18,13 @@ export const LESSON_BY_ID: Record<string, Lesson> = Object.fromEntries(LESSONS.m
 export function lessonsOfTrack(trackId: string): Lesson[] {
   return LESSONS.filter((l) => l.track === trackId).sort((a, b) => a.order - b.order)
 }
+
+import { TRACK_BY_ID } from './tracks'
+
+export function kindOfLesson(l: Lesson): 'code' | 'theory' {
+  return TRACK_BY_ID[l.track]?.kind ?? 'theory'
+}
+
+export function lessonsOfKind(kind: 'code' | 'theory'): Lesson[] {
+  return LESSONS.filter((l) => kindOfLesson(l) === kind)
+}

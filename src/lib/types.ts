@@ -16,8 +16,10 @@ export interface Track {
   area: Area
   /** Matéria que faz parte do programa oficial da ANPEC */
   anpec: boolean
-  hue: number
-  emoji: string
+  /** Trilhas de código vão para o Laboratório; as demais, para a Formação teórica */
+  kind: 'code' | 'theory'
+  /** Símbolo curto usado no ícone da trilha */
+  glyph: string
 }
 
 export interface ExerciseSpec {
@@ -55,8 +57,13 @@ export interface QuizBSpec {
   explanation: string
 }
 
+export type CalloutVariant = 'definicao' | 'intuicao' | 'atencao' | 'resumo' | 'nota'
+
 export type Segment =
   | { kind: 'md'; text: string; full: boolean }
+  | { kind: 'callout'; variant: CalloutVariant; title: string; text: string; full: boolean }
+  | { kind: 'steps'; title: string; problem: string; steps: string[]; full: boolean }
+  | { kind: 'think'; title: string; question: string; answer: string; full: boolean }
   | { kind: 'exercise'; spec: ExerciseSpec; full: boolean }
   | { kind: 'quizA'; spec: QuizASpec; full: boolean }
   | { kind: 'quizB'; spec: QuizBSpec; full: boolean }

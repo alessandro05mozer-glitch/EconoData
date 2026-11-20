@@ -20,9 +20,9 @@ export function QuizA({ lessonId, trackId, spec }: { lessonId: string; trackId: 
   const score = done ? scoreTipoA(spec.items.map((i) => ({ correct: i.c })), answers) : null
 
   return (
-    <section className="my-6 rounded-2xl border border-line bg-surface p-4 shadow-sm" aria-label="Questão Tipo A">
+    <section className="my-8 max-w-[48rem] rounded-lg border border-line bg-surface p-5" aria-label="Questão Tipo A">
       <div className="mb-2 flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-brandsoft px-2.5 py-0.5 text-xs font-bold text-brand">Questão · formato ANPEC Tipo A</span>
+        <span className="text-[0.95rem] font-semibold">Questão no formato ANPEC<span className="font-normal">. Tipo A, certo ou errado</span></span>
         {best !== undefined && <span className="text-xs text-muted">melhor resultado: {best.toFixed(2)}</span>}
       </div>
       <Markdown text={spec.stem} />
@@ -31,7 +31,7 @@ export function QuizA({ lessonId, trackId, spec }: { lessonId: string; trackId: 
         {spec.items.map((it, i) => {
           const r = score?.perItem[i]
           return (
-            <li key={i} className="rounded-xl border border-line p-3">
+            <li key={i} className="rounded-md border border-line p-3">
               <div className="flex gap-2">
                 <span className="font-bold">{String(i).padStart(2, '0')}.</span>
                 <div className="flex-1">
@@ -56,7 +56,7 @@ export function QuizA({ lessonId, trackId, spec }: { lessonId: string; trackId: 
               </div>
               {done && (
                 <p className={`mt-2 text-sm font-semibold ${r === 'right' ? 'text-ok' : r === 'wrong' ? 'text-bad' : 'text-muted'}`}>
-                  {r === 'right' ? '✓ Acertou (+1)' : r === 'wrong' ? '✗ Errou (−1)' : 'Em branco (0)'} · gabarito: {it.c ? 'Certo' : 'Errado'}
+                  {r === 'right' ? '✓ Acertou (+1)' : r === 'wrong' ? '✗ Errou (−1)' : 'Em branco (0)'}. Gabarito: {it.c ? 'Certo' : 'Errado'}
                 </p>
               )}
             </li>
@@ -70,7 +70,7 @@ export function QuizA({ lessonId, trackId, spec }: { lessonId: string; trackId: 
             setDone(true)
             recordQuiz(key, trackId, s.rq)
           }}
-          className="mt-4 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white"
+          className="mt-4 rounded-md bg-brand px-4 py-2 text-sm font-semibold text-paper"
         >
           Corrigir
         </button>
@@ -105,8 +105,8 @@ export function QuizB({ lessonId, trackId, spec }: { lessonId: string; trackId: 
   const ok = done && scoreTipoB(spec.answer, parsed).rq === 1
 
   return (
-    <section className="my-6 rounded-2xl border border-line bg-surface p-4 shadow-sm" aria-label="Questão Tipo B">
-      <span className="rounded-full bg-brandsoft px-2.5 py-0.5 text-xs font-bold text-brand">Questão · formato ANPEC Tipo B</span>
+    <section className="my-8 max-w-[48rem] rounded-lg border border-line bg-surface p-5" aria-label="Questão Tipo B">
+      <span className="text-[0.95rem] font-semibold">Questão no formato ANPEC<span className="font-normal">. Tipo B, resposta numérica</span></span>
       <div className="mt-2">
         <Markdown text={spec.stem} />
       </div>
@@ -127,7 +127,7 @@ export function QuizB({ lessonId, trackId, spec }: { lessonId: string; trackId: 
               setDone(true)
               recordQuiz(key, trackId, scoreTipoB(spec.answer, parsed).rq)
             }}
-            className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white"
+            className="rounded-md bg-brand px-4 py-2 text-sm font-semibold text-paper"
           >
             Corrigir
           </button>

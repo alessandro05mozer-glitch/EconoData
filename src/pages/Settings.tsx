@@ -36,9 +36,9 @@ export function Settings() {
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
-      <h1 className="text-2xl font-extrabold">Ajustes</h1>
+      <h1 className="text-3xl font-semibold" style={{ fontFamily: 'var(--font-serif)' }}>Ajustes</h1>
 
-      <section className="rounded-2xl border border-line bg-surface p-4">
+      <section className="rounded-lg border border-line bg-surface p-4">
         <h2 className="font-bold">Aparência</h2>
         <div className="mt-2 flex gap-2" role="radiogroup" aria-label="Tema">
           {([['system', 'Automático'], ['light', 'Claro'], ['dark', 'Escuro']] as [Theme, string][]).map(([v, l]) => (
@@ -55,7 +55,7 @@ export function Settings() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-line bg-surface p-4">
+      <section className="rounded-lg border border-line bg-surface p-4">
         <h2 className="font-bold">Meta semanal</h2>
         <label className="mt-2 flex items-center gap-3 text-sm">
           XP por semana
@@ -72,20 +72,20 @@ export function Settings() {
         <p className="mt-1 text-xs text-muted">Referência: uma lição completa com exercício rende cerca de 100 XP.</p>
       </section>
 
-      <section className="rounded-2xl border border-line bg-surface p-4">
+      <section className="rounded-lg border border-line bg-surface p-4">
         <h2 className="font-bold">Backup do progresso</h2>
         <p className="mt-1 text-sm text-muted">
           Por enquanto o progresso fica salvo só neste navegador, sem login. Para levar do computador ao celular (ou se for limpar os dados do navegador), baixe o backup e importe no outro aparelho.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <button onClick={download} className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white">Baixar backup</button>
+          <button onClick={download} className="rounded-md bg-brand px-4 py-2 text-sm font-semibold text-paper">Baixar backup</button>
           <button onClick={() => file.current?.click()} className="rounded-lg border border-line px-4 py-2 text-sm font-semibold">Importar backup</button>
           <input ref={file} type="file" accept="application/json,.json" hidden onChange={(e) => { void onImport(e.target.files?.[0]); e.target.value = '' }} />
         </div>
         {msg && <p className="mt-2 text-sm" role="status">{msg}</p>}
       </section>
 
-      <section className="rounded-2xl border border-bad p-4">
+      <section className="rounded-lg border border-bad p-4">
         <h2 className="font-bold text-bad">Zerar progresso</h2>
         <p className="mt-1 text-sm text-muted">Apaga XP, lições, exercícios e cartões deste aparelho. Baixe o backup antes.</p>
         <button

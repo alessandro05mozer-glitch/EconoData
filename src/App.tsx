@@ -4,6 +4,7 @@ import { Layout } from './components/Layout'
 import { useStore } from './lib/store'
 import { Dashboard } from './pages/Dashboard'
 import { Review } from './pages/Review'
+import { Playground } from './pages/Playground'
 import { Settings } from './pages/Settings'
 import { TrackPage, Tracks } from './pages/Tracks'
 
@@ -23,7 +24,9 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Dashboard />} />
-          <Route path="trilhas" element={<Tracks />} />
+          <Route path="laboratorio" element={<Tracks kind="code" />} />
+          <Route path="laboratorio/livre" element={<Playground />} />
+          <Route path="teoria" element={<Tracks kind="theory" />} />
           <Route path="trilhas/:trackId" element={<TrackPage />} />
           <Route path="licao/:lessonId" element={<Suspense fallback={<p className="text-muted">Carregando lição…</p>}><LessonPage /></Suspense>} />
           <Route path="revisao" element={<Review />} />

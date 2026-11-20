@@ -1,5 +1,6 @@
 import { parse as parseYaml } from 'yaml'
 import type {
+  CalloutVariant,
   CardSeed,
   ExerciseSpec,
   Lang,
@@ -27,12 +28,30 @@ import type {
 //   ```exercise   YAML de um exercício de código (python, sql ou r)
 //   ```quiz-a     YAML de uma questão Tipo A (afirmativas certo/errado)
 //   ```quiz-b     YAML de uma questão Tipo B (resposta numérica de 0 a 99)
-//   ```sim        YAML com o id do simulador
+//   ```sim        YAML com o id do simulador (ilustração interativa)
+//
+//   Blocos de destaque, escritos entre linhas ::: (conteúdo em Markdown):
+//     :::definicao Título        definição formal
+//     :::intuicao Título         a ideia por trás da fórmula
+//     :::atencao Título          erro comum
+//     :::resumo Título           o que levar da seção
+//     :::nota Título             observação
+//     :::exemplo Título          exemplo resolvido: enunciado, e cada passo separado por uma linha ---
+//     :::pense Título            pergunta, uma linha ---, e a resposta (aparece ao clicar)
 //
 // Exercícios aparecem só na versão completa, a menos que tenham `quick: true`.
 
 const FULL_MARKER = '<!--full-->'
 const SPECIAL = new Set(['exercise', 'quiz-a', 'quiz-b', 'sim'])
+const CALLOUTS = new Set<string>(['definicao', 'intuicao', 'atencao', 'resumo', 'nota'])
+
+/** Divide o texto nas linhas que contêm só --- */
+function splitByRule(text: string): string[] {
+  return text
+    .split(/\n[ \t]*---[ \t]*\n/)
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0)
+}
 const LANGS: Lang[] = ['python', 'sql', 'r']
 
 export class LessonError extends Error {
@@ -126,6 +145,35 @@ export function parseLesson(src: string, fileName: string): Lesson {
       flush()
       full = true
       continue
+    }
+    const dir = line.match(/^:::(\w+)[ \t]*(.*)$/)
+    if (dir) {
+      const name = dir[1]
+      const title = dir[2].trim()
+      if (CALLOUTS.has(name) || name === 'exemplo' || name === 'pense') {
+        const content: string[] = []
+        i += 1
+        while (i < lines.length && lines[i].trim() !== ':::') {
+          content.push(lines[i])
+          i += 1
+        }
+        if (i >= lines.length) throw new LessonError(id, `bloco ":::${name}" sem fechamento (falta uma linha :::).`)
+        flush()
+        const text = content.join('\n').trim()
+        if (!text) throw new LessonError(id, `bloco ":::${name}" vazio.`)
+        if (name === 'exemplo') {
+          const parts = splitByRule(text)
+          if (parts.length < 2) throw new LessonError(id, 'bloco ":::exemplo" precisa de enunciado e ao menos um passo, separados por ---.')
+          segments.push({ kind: 'steps', title, problem: parts[0], steps: parts.slice(1), full })
+        } else if (name === 'pense') {
+          const parts = splitByRule(text)
+          if (parts.length !== 2) throw new LessonError(id, 'bloco ":::pense" precisa de pergunta e resposta separadas por uma linha ---.')
+          segments.push({ kind: 'think', title, question: parts[0], answer: parts[1], full })
+        } else {
+          segments.push({ kind: 'callout', variant: name as CalloutVariant, title, text, full })
+        }
+        continue
+      }
     }
     const open = line.match(/^```([\w-]+)\s*$/)
     if (open && SPECIAL.has(open[1])) {
